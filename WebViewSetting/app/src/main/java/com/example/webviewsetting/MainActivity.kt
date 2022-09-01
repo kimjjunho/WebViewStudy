@@ -6,6 +6,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.KeyEvent
+import android.view.View
 import android.view.Window
 import android.webkit.*
 import com.example.webviewsetting.databinding.ActivityMainBinding
@@ -132,6 +133,90 @@ class MainActivity : AppCompatActivity() {
             //경고 표시나 윈도우 닫기 등의 Web 브라우저 이벤트를 구하기 위한 클래스
             webChromeClient = object : WebChromeClient() {
                 
+
+                //페이지 로딩 프로그래스바
+                override fun onProgressChanged(view: WebView?, newProgress: Int) {
+                    super.onProgressChanged(view, newProgress)
+                }
+
+                //현재 페이지 title 가져옴
+                override fun onReceivedTitle(view: WebView?, title: String?) {
+                    super.onReceivedTitle(view, title)
+                    val getTitle = view?.title
+                }
+
+                //파비콘이 들어올 경우에 호출됨
+                override fun onReceivedIcon(view: WebView?, icon: Bitmap?) {
+                    super.onReceivedIcon(view, icon)
+                }
+
+                //Javascipt console message가 전달됨
+                override fun onConsoleMessage(consoleMessage: ConsoleMessage?): Boolean {
+                    return super.onConsoleMessage(consoleMessage)
+                }
+                //API level 8
+                override fun onConsoleMessage(message: String?, lineNumber: Int, sourceID: String?) {
+                    super.onConsoleMessage(message, lineNumber, sourceID)
+                }
+
+                //Geolocation API 사용하는 팝업이 닫힘
+                override fun onGeolocationPermissionsHidePrompt() {
+                    super.onGeolocationPermissionsHidePrompt()
+                }
+
+                //Geolocation API 팝업을 노출할 경우. 커스텀 가능
+                override fun onGeolocationPermissionsShowPrompt(origin: String?, callback: GeolocationPermissions.Callback?) {
+                    super.onGeolocationPermissionsShowPrompt(origin, callback)
+                }
+
+                //Javascript confirm에 해당 합니다
+                override fun onJsConfirm(view: WebView?, url: String?, message: String?, result: JsResult?): Boolean {
+                    return super.onJsConfirm(view, url, message, result)
+                }
+
+                //Javascript prompt에 대한하는 기능을 제공합니다
+                override fun onJsPrompt(view: WebView?, url: String?, message: String?, defaultValue: String?, result: JsPromptResult?): Boolean {
+                    return super.onJsPrompt(view, url, message, defaultValue, result)
+                }
+
+                //API level 17
+                //이하 버전에서만 사용을 하여야 하고 자바스크립트 실행 시간이 초과 되었음을 알려줍니다
+                //retrun true면 실행을 중지하고 return false면 계속 실행합니다
+                override fun onJsTimeout(): Boolean {
+                    return super.onJsTimeout()
+                }
+
+                //클라이언트에 권한이 필요할 경우에 호출되는 부분
+                override fun onPermissionRequest(request: PermissionRequest?) {
+                    super.onPermissionRequest(request)
+                }
+
+                //클라이언트에 권한 요청을 취소하는 경우입니다. UI로 노출하여 주었던 부분을 없애주면 됩니다.
+                override fun onPermissionRequestCanceled(request: PermissionRequest?) {
+                    super.onPermissionRequestCanceled(request)
+                }
+
+                //deprecated in API level 19
+                //앱에서 사용할 캐시의 용량을 제한합니다
+                //현재는 HTML5/Javascript Quota Management API로 이동하였습니다
+                override fun onReachedMaxAppCacheSize(requiredStorage: Long, quota: Long, quotaUpdater: WebStorage.QuotaUpdater?) {
+                    super.onReachedMaxAppCacheSize(requiredStorage, quota, quotaUpdater)
+                }
+
+                //애플의 터치 아이콘을 눌렀을 경우에 호출됩니다.
+                override fun onReceivedTouchIconUrl(view: WebView?, url: String?, precomposed: Boolean) {
+                    super.onReceivedTouchIconUrl(view, url, precomposed)
+                }
+
+                //웹뷰의 포커스가 요청될 경우에 호출됩니다
+                override fun onRequestFocus(view: WebView?) {
+                    super.onRequestFocus(view)
+                }
+
+                //커스텀뷰라고 웹뷰를 덮는 형태의 뷰가 보여질때 호출됨
+                override fun onShowCustomView(view: View?, callback: CustomViewCallback?) {
+                    super.onShowCustomView(view, callback)
+                }
             }
 
             //webChromeClient와 가장 큰 차이는 새탭이 열리는지의 유무이다
