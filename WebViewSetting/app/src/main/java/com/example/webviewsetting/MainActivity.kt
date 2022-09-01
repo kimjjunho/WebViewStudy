@@ -22,7 +22,9 @@ class MainActivity : AppCompatActivity() {
         webViewSetting()
     }
 
-    @SuppressLint("SetJavaScriptEnabled") //자바 스크립트 허용 관련 Lint tool
+    //SetJavaScriptEnabled 자바 스크립트 허용 관련 Lint tool
+
+    @SuppressLint("SetJavaScriptEnabled")
     private fun webViewSetting(){
         binding.mWebView.settings.apply {
             //새창 띄우기 허용
@@ -44,7 +46,22 @@ class MainActivity : AppCompatActivity() {
             builtInZoomControls = false
 
             //브라우저 캐쉬 허용
-            cacheMode = WebSettings.LOAD_NO_CACHE
+            cacheMode.run {
+                //캐시 설정
+                WebSettings.LOAD_NO_CACHE
+
+                //캐시 기간만료 시 네트워크 접속
+                WebSettings.LOAD_CACHE_ELSE_NETWORK
+
+                //캐시만 불러옴(네트워크 사용 x)
+                WebSettings.LOAD_CACHE_ONLY
+
+                //기본 모드, 캐시 시용, 기간 만료 시 네트워크 사용
+                WebSettings.LOAD_NO_CACHE
+
+                //기본 캐시 사용 @Deprecated
+                WebSettings.LOAD_NORMAL
+            }
 
             //로컬 저장 허용
             databaseEnabled = true
@@ -78,7 +95,6 @@ class MainActivity : AppCompatActivity() {
 
             //클릭시 새창 안뜨게 (알리 및 요청 관련 설정)
             setSupportMultipleWindows(false)
-
 
             //
             userAgentString = "WebView"
