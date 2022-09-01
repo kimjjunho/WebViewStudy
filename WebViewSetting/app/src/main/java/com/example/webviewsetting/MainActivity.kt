@@ -121,9 +121,11 @@ class MainActivity : AppCompatActivity() {
             addJavascriptInterface(this,"MainActivity")
 
             //웹뷰 캐시 날리기
+            //이전 페이지 데이터 저장이 캐쉬
             clearCache(true)
 
             //웹뷰의 히스토리 삭제(뒤로가기 삭제)
+            //페이지를 이전으로 이동할 수 있는 기능이 히스토리
             clearHistory()
 
             //웹뷰에 표시할 웹사이트 주소, 웹뷰 주소
