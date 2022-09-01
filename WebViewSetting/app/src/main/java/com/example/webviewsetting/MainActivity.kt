@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.webkit.WebChromeClient
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -24,7 +25,7 @@ class MainActivity : AppCompatActivity() {
 
     //SetJavaScriptEnabled 자바 스크립트 허용 관련 Lint tool
 
-    @SuppressLint("SetJavaScriptEnabled")
+    @SuppressLint("SetJavaScriptEnabled", "JavascriptInterface")
     private fun webViewSetting(){
         binding.mWebView.settings.apply {
             //새창 띄우기 허용
@@ -47,7 +48,7 @@ class MainActivity : AppCompatActivity() {
 
             //브라우저 캐쉬 허용
             cacheMode.run {
-                //캐시 설정
+                //항상 네트워크에서 가져옴
                 WebSettings.LOAD_NO_CACHE
 
                 //캐시 기간만료 시 네트워크 접속
@@ -58,6 +59,9 @@ class MainActivity : AppCompatActivity() {
 
                 //기본 모드, 캐시 시용, 기간 만료 시 네트워크 사용
                 WebSettings.LOAD_NO_CACHE
+
+                //유요한 캐시일때만 캐시에서 로드한다. 그렇지 않다면 네트워크에서 가져옴
+                WebSettings.LOAD_DEFAULT
 
                 //기본 캐시 사용 @Deprecated
                 WebSettings.LOAD_NORMAL
@@ -113,8 +117,27 @@ class MainActivity : AppCompatActivity() {
 
         binding.mWebView.webViewClient = WebViewClient()
         binding.mWebView.run {
+            //내부에 JavascriptInterface 메서드 구현
+            addJavascriptInterface(this,"MainActivity")
+
+            //웹뷰 캐시 날리기
+            clearCache(true)
+
+            //웹뷰의 히스토리 삭제(뒤로가기 삭제)
+            clearHistory()
+
             //웹뷰에 표시할 웹사이트 주소, 웹뷰 주소
             loadUrl("http://m.naver.com")
+
+            //경고 표시나 윈도우 닫기 등의 Web 브라우저 이벤트를 구하기 위한 클래스
+            webChromeClient =  WebChromeClient()
+
         }
+
     }
+
+
+
+
 }
+
